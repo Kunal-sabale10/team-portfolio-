@@ -1,4 +1,4 @@
-import React, { useRef, useState, useMemo } from 'react';
+import React, { useRef, useState, useMemo, Suspense, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Text, OrbitControls, Float } from '@react-three/drei';
 import * as THREE from 'three';
@@ -19,7 +19,7 @@ const SKILL_ITEMS = [
   { name: 'AWWWARDS CRAFT', level: 'SOTD' },
 ];
 
-const OrbitingBadge = ({ text, subtext, position, index, total, isDark }) => {
+const OrbitingBadge = ({ text, subtext, position, isDark }) => {
   const meshRef = useRef();
   const [hovered, setHovered] = useState(false);
 
@@ -29,7 +29,6 @@ const OrbitingBadge = ({ text, subtext, position, index, total, isDark }) => {
 
   useFrame((state) => {
     if (meshRef.current) {
-      // Keep badge oriented toward the camera
       meshRef.current.quaternion.copy(state.camera.quaternion);
     }
   });
@@ -68,14 +67,13 @@ const OrbitingBadge = ({ text, subtext, position, index, total, isDark }) => {
         />
       </mesh>
 
-      {/* Tech Skill 3D Text */}
+      {/* Tech Skill 3D Text (uses default built-in font for instantaneous zero-latency render) */}
       <Text
         position={[0, 0.08, 0.06]}
         fontSize={0.14}
         color={hovered ? '#000000' : textColor}
         anchorX="center"
         anchorY="middle"
-        font="https://fonts.gstatic.com/s/syne/v22/8vIS7w4qzmVxsWxjBCHSnvto-KYqpn1sww.woff2"
       >
         {text}
       </Text>
@@ -98,7 +96,6 @@ const OrbitingBadge = ({ text, subtext, position, index, total, isDark }) => {
 const OrbitingCluster = ({ isDark }) => {
   const groupRef = useRef();
 
-  // Distribute badges in an orbital ring with staggered elevation
   const badges = useMemo(() => {
     const radius = 3.4;
     const total = SKILL_ITEMS.length;
@@ -107,19 +104,16 @@ const OrbitingCluster = ({ isDark }) => {
       const angle = (i / total) * Math.PI * 2;
       const x = Math.cos(angle) * radius;
       const z = Math.sin(angle) * radius;
-      const y = Math.sin(angle * 2) * 0.8; // wave undulating elevation
+      const y = Math.sin(angle * 2) * 0.8;
       return {
         ...skill,
         position: [x, y, z],
-        index: i,
-        total,
       };
     });
   }, []);
 
   useFrame((_, delta) => {
     if (groupRef.current) {
-      // Continuous slow orbital rotation
       groupRef.current.rotation.y += delta * 0.25;
       groupRef.current.rotation.x = Math.sin(groupRef.current.rotation.y * 0.5) * 0.12;
     }
@@ -147,8 +141,6 @@ const OrbitingCluster = ({ isDark }) => {
           text={b.name}
           subtext={b.level}
           position={b.position}
-          index={b.index}
-          total={b.total}
           isDark={isDark}
         />
       ))}
@@ -156,8 +148,34 @@ const OrbitingCluster = ({ isDark }) => {
   );
 };
 
+const OrbitClusterControl = () => {
+  return (
+    <OrbitControls
+      enableZoom={false}
+      enablePan={false}
+      rotateSpeed={0.6}
+      dampingFactor={0.05}
+      maxPolarAngle={Math.PI / 1.7}
+      minPolarAngle={Math.PI / 3}
+    />
+  );
+};
+
 export const Skills3DCanvas = () => {
   const { isDark } = useTheme();
+  const [hasWebGL, setHasWebGL] = useState(true);
+
+  useEffect(() => {
+    try {
+      const canvas = document.createElement('canvas');
+      const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+      if (!gl) setHasWebGL(false);
+    } catch {
+      setHasWebGL(false);
+    }
+  }, []);
+
+  if (!hasWebGL) return null;
 
   return (
     <div className="relative w-full h-[450px] sm:h-[550px] rounded-2xl overflow-hidden border border-editorial-border bg-editorial-surface/40 backdrop-blur-md">
@@ -172,27 +190,15 @@ export const Skills3DCanvas = () => {
         dpr={[1, typeof window !== 'undefined' ? Math.min(window.devicePixelRatio, 2) : 1]}
         gl={{ alpha: true, antialias: true }}
       >
-        <ambientLight intensity={isDark ? 0.7 : 0.9} />
-        <pointLight position={[5, 6, 5]} intensity={2.5} color={isDark ? '#d4ff00' : '#ff3800'} />
-        <pointLight position={[-5, -4, -3]} intensity={1.5} color={isDark ? '#8b5cf6' : '#2563eb'} />
+        <Suspense fallback={null}>
+          <ambientLight intensity={isDark ? 0.7 : 0.9} />
+          <pointLight position={[5, 6, 5]} intensity={2.5} color={isDark ? '#d4ff00' : '#ff3800'} />
+          <pointLight position={[-5, -4, -3]} intensity={1.5} color={isDark ? '#8b5cf6' : '#2563eb'} />
 
-        <OrbitClusterControl />
-        <OrbitingCluster isDark={isDark} />
+          <OrbitClusterControl />
+          <OrbitingCluster isDark={isDark} />
+        </Suspense>
       </Canvas>
     </div>
-  );
-};
-
-// OrbitControls with damped physics and limited vertical tilt
-const OrbitClusterControl = () => {
-  return (
-    <OrbitControls
-      enableZoom={false}
-      enablePan={false}
-      rotateSpeed={0.6}
-      dampingFactor={0.05}
-      maxPolarAngle={Math.PI / 1.7}
-      minPolarAngle={Math.PI / 3}
-    />
   );
 };
