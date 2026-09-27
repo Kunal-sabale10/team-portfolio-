@@ -1,7 +1,8 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Cpu, Sparkles, Check, Code2, Layers, Compass } from 'lucide-react';
+import { Cpu, Sparkles, Orbit } from 'lucide-react';
 import { SKILLS_DATA } from '../../data/portfolioData';
+import { Skills3DCanvas } from '../canvas/Skills3DCanvas';
 
 export const Skills = ({ soundEffects }) => {
   const [activeTab, setActiveTab] = useState(SKILLS_DATA.categories[0].id);
@@ -12,9 +13,9 @@ export const Skills = ({ soundEffects }) => {
   return (
     <section
       id="skills"
-      className="relative py-28 sm:py-36 border-t border-editorial-border bg-editorial-bg overflow-hidden"
+      className="relative py-28 sm:py-36 border-t border-editorial-border bg-editorial-bg/60 backdrop-blur-sm overflow-hidden"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-10 mb-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-10 mb-12">
         {/* Section Header */}
         <div className="flex items-center gap-3 text-xs font-mono tracking-widest text-editorial-accent uppercase mb-3">
           <Cpu size={16} />
@@ -24,46 +25,17 @@ export const Skills = ({ soundEffects }) => {
           THE CRAFT <span className="font-serif italic font-normal text-editorial-accent">Arsenal</span>
         </h2>
         <p className="mt-4 text-sm sm:text-base font-sans text-editorial-text-muted max-w-xl">
-          {SKILLS_DATA.subtext} From raw GPU rendering loops to silky micro-interactions.
+          {SKILLS_DATA.subtext} Rendered below in a continuous, real-time interactive 3D WebGL orbital cluster.
         </p>
       </div>
 
-      {/* Kinetic Infinite Marquee 1 (Left Scrolling) */}
-      <div className="relative w-full overflow-hidden py-3 border-y border-editorial-border bg-editorial-surface/40 backdrop-blur-sm select-none">
-        <div className="flex w-max animate-marquee hover:[animation-play-state:paused]">
-          {[...SKILLS_DATA.marqueeRow1, ...SKILLS_DATA.marqueeRow1, ...SKILLS_DATA.marqueeRow1].map((skill, index) => (
-            <div
-              key={index}
-              onMouseEnter={playHover}
-              className="mx-3 px-5 py-2.5 rounded-full border border-editorial-border bg-editorial-surface flex items-center gap-2 text-xs sm:text-sm font-mono tracking-wider uppercase text-editorial-text hover:border-editorial-accent hover:text-editorial-accent transition-colors cursor-default"
-              data-cursor="STACK"
-            >
-              <span className="w-1.5 h-1.5 rounded-full bg-editorial-accent" />
-              <span>{skill}</span>
-            </div>
-          ))}
-        </div>
+      {/* CORE 3D REQUIREMENT: Real-Time 3D Orbital Canvas Cluster */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-10 mb-16">
+        <Skills3DCanvas />
       </div>
 
-      {/* Kinetic Infinite Marquee 2 (Right Scrolling - Reverse) */}
-      <div className="relative w-full overflow-hidden py-3 border-b border-editorial-border bg-editorial-surface/20 backdrop-blur-sm select-none mt-2">
-        <div className="flex w-max animate-marquee-reverse hover:[animation-play-state:paused]">
-          {[...SKILLS_DATA.marqueeRow2, ...SKILLS_DATA.marqueeRow2, ...SKILLS_DATA.marqueeRow2].map((skill, index) => (
-            <div
-              key={index}
-              onMouseEnter={playHover}
-              className="mx-3 px-5 py-2.5 rounded-full border border-editorial-border bg-editorial-surface flex items-center gap-2 text-xs sm:text-sm font-mono tracking-wider uppercase text-editorial-text hover:border-editorial-accent hover:text-editorial-accent transition-colors cursor-default"
-              data-cursor="STACK"
-            >
-              <span className="w-1.5 h-1.5 rounded-full bg-editorial-accent-secondary" />
-              <span>{skill}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Interactive Category Glow Grid */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-10 mt-16 sm:mt-24">
+      {/* Categorized Tech Breakdown & Proficiency Grid */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-10">
         {/* Tab Switchers */}
         <div className="flex flex-wrap items-center gap-2 mb-10 pb-4 border-b border-editorial-border">
           {SKILLS_DATA.categories.map((cat) => {

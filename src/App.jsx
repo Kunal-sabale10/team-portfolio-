@@ -1,10 +1,11 @@
-﻿import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Lenis from 'lenis';
 import { useSoundEffects } from './hooks/useSoundEffects';
 import { CustomCursor } from './components/common/CustomCursor';
 import { Preloader } from './components/common/Preloader';
 import { ScrollProgress } from './components/common/ScrollProgress';
 import { GrainOverlay } from './components/common/GrainOverlay';
+import { SceneExperience } from './components/canvas/SceneExperience';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
 
@@ -53,40 +54,43 @@ export function App() {
       {/* 1. Cinematic Preloader with Counter */}
       <Preloader onComplete={() => setPreloaderDone(true)} />
 
-      {/* 2. Tactile Film Grain & Noise Overlay */}
+      {/* 2. PERSISTENT CONTINUOUS 3D R3F WORLD (Across all sections) */}
+      <SceneExperience />
+
+      {/* 3. Tactile Film Grain & Noise Overlay */}
       <GrainOverlay />
 
-      {/* 3. Smooth Top Reading Progress Bar */}
+      {/* 4. Smooth Top Reading Progress Bar */}
       <ScrollProgress />
 
-      {/* 4. Custom Trailing Fluid Magnetic Cursor */}
+      {/* 5. Custom Trailing Fluid Magnetic Cursor */}
       <CustomCursor />
 
-      {/* 5. Sticky Navigation Bar */}
+      {/* 6. Sticky Navigation Bar */}
       <Navbar soundEffects={soundEffects} lenisRef={lenisRef} />
 
-      {/* 6. Main Content Area (Mandatory Sections 1 to 6 in exact order) */}
+      {/* 7. Main Content Area (Mandatory Sections 1 to 6 in exact order) */}
       <main className="relative z-10">
-        {/* SECTION 1: HERO */}
+        {/* SECTION 1: HERO (Centric 3D mesh distortion + cursor parallax) */}
         <Hero lenisRef={lenisRef} soundEffects={soundEffects} />
 
-        {/* SECTION 2: ABOUT */}
+        {/* SECTION 2: ABOUT (3D camera orbits to left lateral view) */}
         <About />
 
-        {/* SECTION 3: TEAM */}
+        {/* SECTION 3: TEAM (3D tilt cards with perspective & dynamic lighting) */}
         <Team soundEffects={soundEffects} />
 
-        {/* SECTION 4: PROJECTS */}
+        {/* SECTION 4: PROJECTS (3D floating panels with layered depth) */}
         <Projects soundEffects={soundEffects} />
 
-        {/* SECTION 5: SKILLS */}
+        {/* SECTION 5: SKILLS (Interactive 3D Orbital Canvas Cluster) */}
         <Skills soundEffects={soundEffects} />
 
-        {/* SECTION 6: CONTACT */}
+        {/* SECTION 6: CONTACT (3D camera tilts upward into transmission stream) */}
         <Contact soundEffects={soundEffects} />
       </main>
 
-      {/* 7. Editorial Closing Footer */}
+      {/* 8. Editorial Closing Footer */}
       <Footer lenisRef={lenisRef} soundEffects={soundEffects} />
     </div>
   );

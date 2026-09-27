@@ -1,7 +1,8 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Github, Linkedin, Twitter, Sparkles, Quote, Terminal, ArrowUpRight } from 'lucide-react';
+import { Github, Linkedin, Twitter, Quote, Terminal } from 'lucide-react';
 import { TEAM_MEMBERS } from '../../data/portfolioData';
+import { Tilt3DCard } from '../common/Tilt3DCard';
 
 export const Team = ({ soundEffects }) => {
   const [activeMember, setActiveMember] = useState(null);
@@ -10,7 +11,7 @@ export const Team = ({ soundEffects }) => {
   return (
     <section
       id="team"
-      className="relative py-28 sm:py-36 px-4 sm:px-6 md:px-10 border-t border-editorial-border bg-editorial-bg overflow-hidden"
+      className="relative py-28 sm:py-36 px-4 sm:px-6 md:px-10 border-t border-editorial-border bg-editorial-bg/60 backdrop-blur-sm overflow-hidden"
     >
       <div className="max-w-7xl mx-auto">
         {/* Section Header */}
@@ -25,42 +26,47 @@ export const Team = ({ soundEffects }) => {
             </h2>
           </div>
           <p className="text-sm sm:text-base font-sans text-editorial-text-muted max-w-md">
-            Four specialized disciplines united by obsessive precision. Hover cards to inspect core capabilities and transmissions.
+            Four specialized disciplines united by obsessive precision. Interactive 3D tilt cards with dynamic lighting and layered depth.
           </p>
         </div>
 
-        {/* Interactive Team Cards Grid */}
+        {/* 3D Tilt Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
           {TEAM_MEMBERS.map((member, index) => {
             const isHovered = activeMember === member.id;
 
             return (
-              <motion.div
+              <Tilt3DCard
                 key={member.id}
+                maxTilt={16}
+                className="border border-editorial-border bg-editorial-surface overflow-hidden flex flex-col justify-between hover:border-editorial-accent transition-colors"
                 onMouseEnter={() => {
                   setActiveMember(member.id);
                   playHover();
                 }}
                 onMouseLeave={() => setActiveMember(null)}
-                whileHover={{ y: -8 }}
-                transition={{ duration: 0.3 }}
-                className="group relative rounded-2xl border border-editorial-border bg-editorial-surface overflow-hidden flex flex-col justify-between transition-colors duration-300 hover:border-editorial-accent shadow-sm"
                 data-cursor="MEMBER"
               >
-                {/* Top Avatar Area with Image Filter & Hover Zoom */}
-                <div className="relative aspect-[4/5] w-full overflow-hidden bg-editorial-surface-elevated">
+                {/* Top Avatar Area with 3D Depth */}
+                <div
+                  className="relative aspect-[4/5] w-full overflow-hidden bg-editorial-surface-elevated"
+                  style={{ transform: 'translateZ(15px)' }}
+                >
                   <img
                     src={member.avatar}
                     alt={member.name}
-                    className="w-full h-full object-cover object-center grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 ease-out"
+                    className="w-full h-full object-cover object-center grayscale hover:grayscale-0 transition-all duration-700 ease-out"
                   />
 
                   {/* Gradient Vignette */}
                   <div className="absolute inset-0 bg-gradient-to-t from-editorial-surface via-transparent to-transparent opacity-90" />
 
                   {/* Top Badge Overlay */}
-                  <div className="absolute top-4 left-4 right-4 flex items-center justify-between text-[10px] font-mono tracking-widest uppercase">
-                    <span className="px-2.5 py-1 rounded-full bg-editorial-bg/80 backdrop-blur-md border border-editorial-border text-editorial-accent font-bold">
+                  <div
+                    className="absolute top-4 left-4 right-4 flex items-center justify-between text-[10px] font-mono tracking-widest uppercase"
+                    style={{ transform: 'translateZ(30px)' }}
+                  >
+                    <span className="px-2.5 py-1 rounded-full bg-editorial-bg/85 backdrop-blur-md border border-editorial-border text-editorial-accent font-bold">
                       {member.badge}
                     </span>
                     <span className="text-white/80 drop-shadow">0{index + 1}</span>
@@ -71,6 +77,7 @@ export const Team = ({ soundEffects }) => {
                     className={`absolute inset-x-4 bottom-4 p-3.5 rounded-xl bg-editorial-bg/95 backdrop-blur-md border border-editorial-border transition-all duration-300 ${
                       isHovered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'
                     }`}
+                    style={{ transform: 'translateZ(40px)' }}
                   >
                     <div className="flex items-start gap-1.5 text-xs font-serif italic text-editorial-text">
                       <Quote size={12} className="text-editorial-accent shrink-0 mt-0.5" />
@@ -79,10 +86,13 @@ export const Team = ({ soundEffects }) => {
                   </div>
                 </div>
 
-                {/* Card Content Area */}
-                <div className="p-6 pt-2 flex flex-col justify-between flex-grow space-y-4">
+                {/* Card Content with translateZ depth */}
+                <div
+                  className="p-6 pt-3 flex flex-col justify-between flex-grow space-y-4"
+                  style={{ transform: 'translateZ(25px)' }}
+                >
                   <div>
-                    <h3 className="text-xl sm:text-2xl font-display font-extrabold tracking-tight text-editorial-text group-hover:text-editorial-accent transition-colors">
+                    <h3 className="text-xl sm:text-2xl font-display font-extrabold tracking-tight text-editorial-text">
                       {member.name}
                     </h3>
 
@@ -112,8 +122,11 @@ export const Team = ({ soundEffects }) => {
                     </div>
                   </div>
 
-                  {/* Social Transmissions */}
-                  <div className="flex items-center gap-3 pt-2 text-editorial-text-muted">
+                  {/* Social Links */}
+                  <div
+                    className="flex items-center gap-3 pt-2 text-editorial-text-muted"
+                    style={{ transform: 'translateZ(35px)' }}
+                  >
                     {member.socials.github && (
                       <a
                         href={member.socials.github}
@@ -155,7 +168,7 @@ export const Team = ({ soundEffects }) => {
                     )}
                   </div>
                 </div>
-              </motion.div>
+              </Tilt3DCard>
             );
           })}
         </div>

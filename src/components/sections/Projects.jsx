@@ -1,9 +1,10 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowUpRight, Layers, Eye, Zap, Github } from 'lucide-react';
+import { ArrowUpRight, Layers, Eye, Zap } from 'lucide-react';
 import { PROJECTS_DATA } from '../../data/portfolioData';
 import { ProjectModal } from '../common/ProjectModal';
 import { MagneticButton } from '../common/MagneticButton';
+import { Tilt3DCard } from '../common/Tilt3DCard';
 
 export const Projects = ({ soundEffects }) => {
   const [selectedProject, setSelectedProject] = useState(null);
@@ -17,7 +18,7 @@ export const Projects = ({ soundEffects }) => {
   return (
     <section
       id="projects"
-      className="relative py-28 sm:py-36 px-4 sm:px-6 md:px-10 border-t border-editorial-border bg-editorial-bg overflow-hidden"
+      className="relative py-28 sm:py-36 px-4 sm:px-6 md:px-10 border-t border-editorial-border bg-editorial-bg/60 backdrop-blur-sm overflow-hidden"
     >
       <div className="max-w-7xl mx-auto">
         {/* Section Header */}
@@ -32,12 +33,12 @@ export const Projects = ({ soundEffects }) => {
             </h2>
           </div>
           <p className="text-sm sm:text-base font-sans text-editorial-text-muted max-w-md">
-            Interactive spatial prototypes, WebGL shaders, and high-performance applications designed to provoke. Click any artifact to inspect case study.
+            Interactive spatial prototypes rendered in 3D floating panels with layered depth. Click any artifact to inspect case study.
           </p>
         </div>
 
-        {/* Scroll-Driven Editorial Showcase List */}
-        <div className="space-y-24 sm:space-y-36">
+        {/* Scroll-Driven Editorial Showcase with 3D Floating Panels */}
+        <div className="space-y-28 sm:space-y-40">
           {PROJECTS_DATA.map((project, index) => {
             const isEven = index % 2 === 0;
 
@@ -46,50 +47,69 @@ export const Projects = ({ soundEffects }) => {
                 key={project.id}
                 initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
+                viewport={{ once: true, margin: "-80px" }}
                 transition={{ duration: 0.8, ease: "easeOut" }}
                 className={`grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center ${
                   isEven ? '' : 'lg:flex-row-reverse'
                 }`}
               >
-                {/* Visual Media Column */}
+                {/* 3D Floating Panel Preview */}
                 <div
                   className={`lg:col-span-7 ${
                     isEven ? 'order-1' : 'order-1 lg:order-2'
                   }`}
                 >
-                  <div
+                  <Tilt3DCard
+                    maxTilt={14}
+                    className="border border-editorial-border bg-editorial-surface rounded-2xl overflow-hidden shadow-2xl cursor-pointer hover:border-editorial-accent"
                     onClick={() => openProject(project)}
-                    onMouseEnter={playHover}
-                    className="group relative aspect-[16/10] w-full rounded-2xl overflow-hidden border border-editorial-border bg-editorial-surface cursor-pointer shadow-lg hover:border-editorial-accent transition-all duration-500"
                     data-cursor="EXPLORE"
                   >
-                    <img
-                      src={project.image}
-                      alt={project.title}
-                      className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
-                    />
+                    {/* Layer 0: Base Image */}
+                    <div
+                      className="relative aspect-[16/10] w-full overflow-hidden"
+                      style={{ transform: 'translateZ(0px)' }}
+                    >
+                      <img
+                        src={project.image}
+                        alt={project.title}
+                        className="w-full h-full object-cover object-center transition-transform duration-700 ease-out hover:scale-105"
+                      />
 
-                    {/* Gradient Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent group-hover:opacity-40 transition-opacity duration-300" />
+                      {/* Vignette */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent pointer-events-none" />
+                    </div>
 
-                    {/* Quick Floating Badge */}
-                    <div className="absolute top-4 left-4 flex items-center gap-2">
-                      <span className="px-3 py-1 rounded-full bg-black/70 backdrop-blur-md border border-white/10 text-white font-mono text-[10px] tracking-widest uppercase">
+                    {/* Layer 1: Floating Glass Badges */}
+                    <div
+                      className="absolute top-5 left-5 right-5 flex items-center justify-between pointer-events-none"
+                      style={{ transform: 'translateZ(30px)' }}
+                    >
+                      <span className="px-3.5 py-1.5 rounded-full bg-black/75 backdrop-blur-md border border-white/15 text-white font-mono text-[10px] tracking-widest uppercase">
                         {project.category}
                       </span>
-                    </div>
-
-                    <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-white text-xs font-mono">
-                      <span>FPS: {project.metrics.fps || "60"}</span>
-                      <span className="flex items-center gap-1 text-editorial-accent">
-                        <Eye size={14} /> VIEW SPECIFICATIONS
+                      <span className="px-3 py-1 rounded-full bg-editorial-accent text-black font-mono font-bold text-[10px] tracking-wider uppercase">
+                        3D ENGINE
                       </span>
                     </div>
-                  </div>
+
+                    {/* Layer 2: Floating Bottom Telemetry */}
+                    <div
+                      className="absolute bottom-5 left-5 right-5 flex items-center justify-between text-white text-xs font-mono pointer-events-none"
+                      style={{ transform: 'translateZ(45px)' }}
+                    >
+                      <div className="flex items-center gap-2 bg-black/60 px-3 py-1.5 rounded-lg backdrop-blur-sm border border-white/10">
+                        <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                        <span>RENDER: {project.metrics.fps || "60 FPS"}</span>
+                      </div>
+                      <span className="flex items-center gap-1.5 text-editorial-accent font-bold bg-black/60 px-3 py-1.5 rounded-lg backdrop-blur-sm border border-white/10">
+                        <Eye size={14} /> VIEW CASE STUDY
+                      </span>
+                    </div>
+                  </Tilt3DCard>
                 </div>
 
-                {/* Typography & Specs Column */}
+                {/* Typography & Specs Column with 3D Depth */}
                 <div
                   className={`lg:col-span-5 space-y-6 ${
                     isEven ? 'order-2' : 'order-2 lg:order-1'

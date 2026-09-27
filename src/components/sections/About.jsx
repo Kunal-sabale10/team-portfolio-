@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { Boxes, Activity, Award, Zap, Compass, Flame } from 'lucide-react';
 import { ABOUT_DATA, TEAM_INFO } from '../../data/portfolioData';
@@ -14,7 +14,7 @@ export const About = () => {
   return (
     <section
       id="about"
-      className="relative py-28 sm:py-36 px-4 sm:px-6 md:px-10 border-t border-editorial-border bg-editorial-bg overflow-hidden"
+      className="relative py-28 sm:py-36 px-4 sm:px-6 md:px-10 border-t border-editorial-border bg-editorial-bg/60 backdrop-blur-sm overflow-hidden"
     >
       <div className="max-w-7xl mx-auto">
         {/* Section Header with Monospace Tag */}
@@ -65,7 +65,7 @@ export const About = () => {
                     key={idx}
                     whileHover={{ y: -4, borderColor: 'var(--color-accent)' }}
                     transition={{ duration: 0.2 }}
-                    className="p-5 rounded-2xl border border-editorial-border bg-editorial-surface transition-colors"
+                    className="p-5 rounded-2xl border border-editorial-border bg-editorial-surface/90 transition-colors"
                   >
                     <IconComponent size={20} className="text-editorial-accent mb-3" />
                     <div className="text-3xl sm:text-4xl font-display font-black text-editorial-text">
@@ -80,7 +80,7 @@ export const About = () => {
             </div>
 
             {/* Mission Vibe Card */}
-            <div className="p-6 rounded-2xl border border-editorial-border bg-editorial-surface-elevated/80 mt-6">
+            <div className="p-6 rounded-2xl border border-editorial-border bg-editorial-surface-elevated/85 mt-6">
               <div className="flex items-center gap-2 text-xs font-mono text-editorial-accent uppercase mb-2">
                 <Compass size={14} />
                 <span>TEAM ATMOSPHERE</span>
@@ -92,7 +92,7 @@ export const About = () => {
           </div>
         </div>
 
-        {/* 3 Core Philosophy Pillars (Off-Grid Asymmetrical Cards) */}
+        {/* 3 Core Philosophy Pillars */}
         <div className="mt-20 sm:mt-28">
           <div className="text-xs font-mono uppercase tracking-widest text-editorial-text-muted mb-8">
             // CORE ANATOMY
@@ -104,7 +104,7 @@ export const About = () => {
                 key={pillar.index}
                 whileHover={{ y: -6 }}
                 transition={{ duration: 0.3 }}
-                className="group relative p-8 rounded-2xl border border-editorial-border bg-editorial-surface hover:border-editorial-accent/50 transition-all duration-300 flex flex-col justify-between"
+                className="group relative p-8 rounded-2xl border border-editorial-border bg-editorial-surface/90 hover:border-editorial-accent/50 transition-all duration-300 flex flex-col justify-between"
               >
                 <div>
                   <div className="flex items-baseline justify-between font-mono text-xs text-editorial-text-muted mb-6">

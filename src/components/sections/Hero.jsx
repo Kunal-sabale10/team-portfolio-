@@ -1,7 +1,6 @@
-﻿import React from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowDownRight, Sparkles, Terminal, Activity } from 'lucide-react';
-import { HeroCanvas } from '../canvas/HeroCanvas';
+import { ArrowDownRight, Terminal, Sparkles } from 'lucide-react';
 import { MagneticButton } from '../common/MagneticButton';
 import { HERO_DATA, TEAM_INFO } from '../../data/portfolioData';
 
@@ -25,10 +24,7 @@ export const Hero = ({ lenisRef, soundEffects }) => {
       id="hero"
       className="relative min-h-screen flex flex-col justify-between pt-32 pb-16 px-4 sm:px-6 md:px-10 overflow-hidden"
     >
-      {/* 3D WebGL Accent Canvas */}
-      <HeroCanvas />
-
-      {/* Ambient Radial Gradient Mesh */}
+      {/* Ambient Glow Orbs */}
       <div className="absolute top-1/4 -left-32 w-96 h-96 bg-editorial-accent/15 rounded-full blur-3xl pointer-events-none animate-pulse-glow" />
       <div className="absolute top-1/3 -right-32 w-96 h-96 bg-editorial-accent-secondary/15 rounded-full blur-3xl pointer-events-none" />
 
@@ -58,7 +54,7 @@ export const Hero = ({ lenisRef, soundEffects }) => {
               {HERO_DATA.headlinePrefix}
             </span>
             <span className="text-xs sm:text-sm font-mono tracking-widest text-editorial-accent uppercase px-2 py-0.5 border border-editorial-accent/30 rounded">
-              // NO TEMPLATES
+              // WEBGL 3D RUNTIME
             </span>
           </div>
 
@@ -118,7 +114,7 @@ export const Hero = ({ lenisRef, soundEffects }) => {
             {HERO_DATA.quickMetrics.map((item, idx) => (
               <div
                 key={idx}
-                className="p-3.5 rounded-xl border border-editorial-border bg-editorial-surface/60 backdrop-blur-md"
+                className="p-3.5 rounded-xl border border-editorial-border bg-editorial-surface/75 backdrop-blur-md"
               >
                 <div className="text-[10px] text-editorial-text-muted uppercase tracking-wider">
                   {item.label}
@@ -135,15 +131,15 @@ export const Hero = ({ lenisRef, soundEffects }) => {
         </motion.div>
       </div>
 
-      {/* Bottom Scroll Prompt */}
+      {/* Bottom Scroll Prompt & 3D Interactive Indicator */}
       <div className="relative z-10 max-w-7xl mx-auto w-full pt-8 flex items-center justify-between text-xs font-mono text-editorial-text-muted border-t border-editorial-border/60">
         <div className="flex items-center gap-2">
           <Terminal size={14} className="text-editorial-accent" />
-          <span>PORTFOLIO_CORE // REPO_STABLE</span>
+          <span>3D WORLD // REAL-TIME MESH DISTORTION ACTIVE</span>
         </div>
         <div className="flex items-center gap-2">
           <span className="w-1.5 h-1.5 rounded-full bg-editorial-accent animate-ping" />
-          <span>SCROLL TO DESCEND</span>
+          <span>SCROLL TO ADVANCE 3D TRAJECTORY</span>
         </div>
       </div>
     </section>
